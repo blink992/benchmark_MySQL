@@ -1,0 +1,9 @@
+Tipo de processamento,Linhas Processadas,Duração em segundos
+Inserção simples,1,1.03
+Inserção em massa,40833,8.09
+Consulta simples,5,0.01
+Consulta complexa,0,0.04
+Atualização de preço,0,0.10
+Atualização de desenvolvedor,6,0.11
+Deleção por nome,1,0.09
+Deleção por ano,62,0.11
