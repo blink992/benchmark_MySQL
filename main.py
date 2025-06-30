@@ -3,8 +3,8 @@ import mysql.connector
 from mysql.connector import Error
 
 import src.crud as crud
-from src.gera_grafico import gerar_graficos_csv
-from src.gera_tabela import gerar_tabela_csv
+from gera_grafico import gerar_graficos_csv
+from gera_tabela import gerar_tabela_csv
 import src.utils as utils
 
 # --- Configurações do seu banco de dados ---
@@ -106,105 +106,94 @@ def get_mysql_connection_and_setup_db() -> mysql.connector.connection.MySQLConne
 
 # --- Executa as operações ---
 if __name__ == "__main__":
-    execute_operations = input('Deseja executar as operações(y/n)?')
-    if execute_operations == "y":
-        connection = get_mysql_connection_and_setup_db()
-        if connection:
-            try:
-                # --- Testes de Inserção ---
-                # print("\n--- Iniciando Teste de Inserção Simples (1 linha) ---")
-                with connection.cursor() as temp_cursor:
-                    temp_cursor.execute(f"TRUNCATE TABLE {table_name}")
-                    temp_cursor.fetchall() # Consumir resultado do TRUNCATE
-                    connection.commit()
-                
-                start_time_simple = time.time()
-                rows_affected_simple = crud.simple_insertion(table_name, connection, 0)
-                end_time_simple = time.time()
-                duration_simple = end_time_simple - start_time_simple
-                utils.log_results("Inserção simples", rows_affected_simple, duration_simple)
-                
-                # print("\n--- Iniciando Teste de Inserção em Massa (todas as linhas) ---")
-                with connection.cursor() as temp_cursor:
-                    temp_cursor.execute(f"TRUNCATE TABLE {table_name}")
-                    temp_cursor.fetchall() # Consumir resultado do TRUNCATE
-                    connection.commit()
-                
-                start_time_mass = time.time()
-                rows_affected_mass = crud.mass_insertion(table_name, connection)
-                end_time_mass = time.time()
-                duration_mass = end_time_mass - start_time_mass
-                utils.log_results("Inserção em massa", rows_affected_mass, duration_mass)
-                
-                # --- Testes de Consulta ---
-                # print("\n--- Iniciando Testes de Consulta ---")
-                
-                start_time_query_simple = time.time()
-                df_simple_query = crud.simple_query(table_name, connection, limit=5)
-                end_time_query_simple = time.time()
-                duration_query_simple = end_time_query_simple - start_time_query_simple
-                # print("Resultados da Consulta Simples:\n", df_simple_query)
-                utils.log_results("Consulta simples", len(df_simple_query), duration_query_simple)
+    connection = get_mysql_connection_and_setup_db()
+    if connection:
+        try:
+            # --- Testes de Inserção ---
+            # print("\n--- Iniciando Teste de Inserção Simples (1 linha) ---")
+            with connection.cursor() as temp_cursor:
+                temp_cursor.execute(f"TRUNCATE TABLE {table_name}")
+                temp_cursor.fetchall() # Consumir resultado do TRUNCATE
+                connection.commit()
+            
+            start_time_simple = time.time()
+            rows_affected_simple = crud.simple_insertion(table_name, connection, 0)
+            end_time_simple = time.time()
+            duration_simple = end_time_simple - start_time_simple
+            utils.log_results("Inserção simples", rows_affected_simple, duration_simple)
+            
+            # print("\n--- Iniciando Teste de Inserção em Massa (todas as linhas) ---")
+            with connection.cursor() as temp_cursor:
+                temp_cursor.execute(f"TRUNCATE TABLE {table_name}")
+                temp_cursor.fetchall() # Consumir resultado do TRUNCATE
+                connection.commit()
+            
+            start_time_mass = time.time()
+            rows_affected_mass = crud.mass_insertion(table_name, connection)
+            end_time_mass = time.time()
+            duration_mass = end_time_mass - start_time_mass
+            utils.log_results("Inserção em massa", rows_affected_mass, duration_mass)
+            
+            # --- Testes de Consulta ---
+            # print("\n--- Iniciando Testes de Consulta ---")
+            
+            start_time_query_simple = time.time()
+            df_simple_query = crud.simple_query(table_name, connection, limit=5)
+            end_time_query_simple = time.time()
+            duration_query_simple = end_time_query_simple - start_time_query_simple
+            # print("Resultados da Consulta Simples:\n", df_simple_query)
+            utils.log_results("Consulta simples", len(df_simple_query), duration_query_simple)
 
-                start_time_query_complex = time.time()
-                df_complex_query = crud.complex_query(table_name, connection)
-                end_time_query_complex = time.time()
-                duration_query_complex = end_time_query_complex - start_time_query_complex
-                # print("Resultados da Consulta Complexa:\n", df_complex_query)
-                utils.log_results("Consulta complexa", len(df_complex_query), duration_query_complex)
+            start_time_query_complex = time.time()
+            df_complex_query = crud.complex_query(table_name, connection)
+            end_time_query_complex = time.time()
+            duration_query_complex = end_time_query_complex - start_time_query_complex
+            # print("Resultados da Consulta Complexa:\n", df_complex_query)
+            utils.log_results("Consulta complexa", len(df_complex_query), duration_query_complex)
 
-                # --- Testes de Atualização ---
-                # print("\n--- Iniciando Testes de Atualização ---")
-                
-                game_to_update_name = "Counter-Strike 2" # Verifique se este jogo existe no seu CSV/DB
-                
-                start_time_update_price = time.time()
-                updated_rows_price = crud.simple_update(table_name, connection,
-                                                        game_to_update_name, "0.00")
-                end_time_update_price = time.time()
-                duration_update_price = end_time_update_price - start_time_update_price
-                utils.log_results("Atualização simples", updated_rows_price, duration_update_price)
+            # --- Testes de Atualização ---
+            # print("\n--- Iniciando Testes de Atualização ---")
+            
+            game_to_update_name = "Counter-Strike 2" # Verifique se este jogo existe no seu CSV/DB
+            
+            start_time_update_price = time.time()
+            updated_rows_price = crud.simple_update(table_name, connection,
+                                                    game_to_update_name, "0.00")
+            end_time_update_price = time.time()
+            duration_update_price = end_time_update_price - start_time_update_price
+            utils.log_results("Atualização simples", updated_rows_price, duration_update_price)
 
-                release_year_for_update = "2012" # Exemplo: ano de lançamento para a atualização em massa
-                new_dev_name = "Valve Software (New)"
-                start_time_update_dev = time.time()
-                updated_rows_dev = crud.mass_update(table_name, connection,
-                                                    release_year_for_update, new_dev_name)
-                end_time_update_dev = time.time()
-                duration_update_dev = end_time_update_dev - start_time_update_dev
-                utils.log_results("Atualização em massa", updated_rows_dev, duration_update_dev)
+            new_dev_name = "Valve Software (New)"
+            start_time_update_dev = time.time()
+            updated_rows_dev = crud.mass_update(table_name, connection, new_dev_name)
+            end_time_update_dev = time.time()
+            duration_update_dev = end_time_update_dev - start_time_update_dev
+            utils.log_results("Atualização em massa", updated_rows_dev, duration_update_dev)
 
-                # --- Testes de Deleção ---
-                # print("\n--- Iniciando Testes de Deleção ---")
-                
-                game_to_delete_name = "Dota 2" # Verifique se este jogo existe no seu DB
-                year_to_delete = "2004" # Exemplo: ano de lançamento para deleção em massa
+            # --- Testes de Deleção ---
+            # print("\n--- Iniciando Testes de Deleção ---")
+            
+            game_to_delete_name = "Dota 2" # Verifique se este jogo existe no seu DB
+            year_to_delete = "2004" # Exemplo: ano de lançamento para deleção em massa
 
-                start_time_delete_name = time.time()
-                deleted_rows_name = crud.simple_delete(table_name, connection, game_to_delete_name)
-                end_time_delete_name = time.time()
-                duration_delete_name = end_time_delete_name - start_time_delete_name
-                utils.log_results("Deleção simples", deleted_rows_name, duration_delete_name)
+            start_time_delete_name = time.time()
+            deleted_rows_name = crud.simple_delete(table_name, connection, game_to_delete_name)
+            end_time_delete_name = time.time()
+            duration_delete_name = end_time_delete_name - start_time_delete_name
+            utils.log_results("Deleção simples", deleted_rows_name, duration_delete_name)
 
-                start_time_delete_year = time.time()
-                deleted_rows_year = crud.mass_delete(table_name, connection, year_to_delete)
-                end_time_delete_year = time.time()
-                duration_delete_year = end_time_delete_year - start_time_delete_year
-                utils.log_results("Deleção em massa", deleted_rows_year, duration_delete_year)
+            start_time_delete_year = time.time()
+            deleted_rows_year = crud.mass_delete(table_name, connection, year_to_delete)
+            end_time_delete_year = time.time()
+            duration_delete_year = end_time_delete_year - start_time_delete_year
+            utils.log_results("Deleção em massa", deleted_rows_year, duration_delete_year)
 
-            except Exception as e:
-                print(f"Um erro ocorreu durante as operações do banco de dados: {e}")
-            finally:
-                if connection and connection.is_connected():
-                    connection.close()
-                    print("Conexão MySQL fechada.")
-                tipo_grafico = input('Informe o tipo de gráfico desejado: ')
-                gerar_graficos_csv('results.csv', 'Tipo de processamento', 'Duração em segundos', tipo_grafico)
-                gerar_tabela_csv('results.csv')
-
-        else:
-            print("Não foi possível estabelecer conexão com o banco de dados.")
+        except Exception as e:
+            print(f"Um erro ocorreu durante as operações do banco de dados: {e}")
+        finally:
+            if connection and connection.is_connected():
+                connection.close()
+                print("Conexão MySQL fechada.")
     else:
-        tipo_grafico = input('Informe o tipo de gráfico desejado: ')
-        gerar_graficos_csv('results.csv', 'Tipo de processamento', 'Duração em segundos', tipo_grafico)
-        gerar_tabela_csv('results.csv')
+        print("Não foi possível estabelecer conexão com o banco de dados.")
+

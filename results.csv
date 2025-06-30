@@ -1,9 +1,0 @@
-Tipo de processamento,Linhas Processadas,Duração em segundos
-Inserção simples,1,1.04
-Inserção em massa,40833,8.89
-Consulta simples,5,0.01
-Consulta complexa,5,7.11
-Atualização simples,1,0.05
-Atualização em massa,40833,6.09
-Deleção simples,1,3.87
-Deleção em massa,40832,1.88

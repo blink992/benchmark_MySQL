@@ -27,10 +27,6 @@ def gerar_tabela_csv(caminho_csv: str, title: str = "Tabela de Dados"):
     ax.axis('off')
     ax.axis('tight')
 
-    # Criar a tabela no Matplotlib
-    # cellText: os valores das células (o DataFrame convertido para lista de listas)
-    # colLabels: os nomes das colunas
-    # loc='center': centraliza a tabela na figura
     table = ax.table(cellText=df.values, 
                      colLabels=df.columns, 
                      loc='center',
@@ -47,16 +43,5 @@ def gerar_tabela_csv(caminho_csv: str, title: str = "Tabela de Dados"):
     plt.tight_layout() # Ajusta o layout para evitar sobreposição
     plt.show() # Mostra a figura da tabela
 
-# --- Exemplo de Uso ---
 if __name__ == "__main__":
-    # Caminho para o seu arquivo CSV de resultados de benchmark
-    # Certifique-se de que este arquivo existe na mesma pasta do script
-    benchmark_csv_file = 'resultados_benchmark.csv' 
-
-    print("Gerando tabela visual a partir do CSV de benchmark...")
-    gerar_tabela_visual_csv(benchmark_csv_file, "Resultados de Benchmark MySQL")
-
-    # Exemplo com outro CSV (descomente para testar)
-    # outro_csv_file = 'dados.csv' 
-    # print("\nGerando tabela visual a partir de 'dados.csv'...")
-    # gerar_tabela_visual_csv(outro_csv_file, "Vendas de Produtos")
+    gerar_tabela_csv('results.csv')

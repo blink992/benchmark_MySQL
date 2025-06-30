@@ -252,8 +252,7 @@ def simple_update(table_name: str, connection: MySQLConnection,
         if cursor: cursor.close()
     return rows_affected
 
-def mass_update(table_name: str, connection: MySQLConnection,
-                             release_year: str, new_developer: str) -> int:
+def mass_update(table_name: str, connection: MySQLConnection, new_developer: str) -> int:
     """
     Atualiza o desenvolvedor de jogos lançados em um ano específico.
     """
@@ -269,7 +268,7 @@ def mass_update(table_name: str, connection: MySQLConnection,
         connection.commit()
         rows_affected = cursor.rowcount
         cursor.fetchall() # Garante que qualquer resultado pendente seja consumido
-        print(f"Atualização do desenvolvedor para jogos de {release_year} concluída. Linhas afetadas: {rows_affected}")
+        print(f"Atualização do desenvolvedor de todos os jogos concluída. Linhas afetadas: {rows_affected}")
 
     except Error as err:
         print(f"Erro no MySQL durante a atualização em massa: {err}")
