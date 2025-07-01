@@ -3,8 +3,6 @@ import mysql.connector
 from mysql.connector import Error
 
 import src.crud as crud
-from gera_grafico import gerar_graficos_csv
-from gera_tabela import gerar_tabela_csv
 import src.utils as utils
 
 # --- Configurações do seu banco de dados ---
